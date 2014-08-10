@@ -1,0 +1,13 @@
+Sys.setlocale(category = "LC_TIME", locale = "English")
+rawdata <- read.table("household_power_consumption.txt", sep=";", header=T)
+data <- transform(rawdata, Date_=as.Date(Date, format='%d/%m/%Y'))
+data1 <- subset(data, (Date_ >= as.Date("01/02/2007", format='%d/%m/%Y')) & (Date_ <= as.Date("02/02/2007", format='%d/%m/%Y')))
+data1 <- transform(data1, Date = as.character(Date))
+data1 <- transform(data1, Time = as.character(Time))
+data1 <- transform(data1, Global_active_power = as.numeric(as.character(Global_active_power)))
+data1 <- transform(data1, DateTime = as.POSIXct(paste(Date, Time, sep=" "), format="%d/%m/%Y %H:%M:%S"))
+par(bg = "white")
+with(data1, plot(DateTime, Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)"))
+dev.copy(png, file = "plot2.png") 
+dev.off()
+
